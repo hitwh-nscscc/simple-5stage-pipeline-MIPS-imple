@@ -171,7 +171,7 @@ module regfile(
 	always @ (posedge clk) begin
 		if (rst == `RstDisable) begin
             // 如果 写使能 而且 我们没有向0号寄存器写入东西的时候，我们才向寄存器里面写入
-            //   因为 0 号寄存器只读而且永远读出 32'h0
+            // 因为 0 号寄存器只读而且永远读出 32'h0
 			if((we == `WriteEnable) && (waddr != `RegNumLog2'h0)) begin
 				regs[waddr] <= wdata;
 			end
@@ -180,7 +180,7 @@ module regfile(
 	
     // 读端口1 的读操作
 	always @ (*) begin
-        // 如果重置则读出 32'h0
+       // 如果重置则读出 32'h0
 	  if(rst == `RstEnable) begin
 			  rdata1 <= `ZeroWord;
        // 如果读0号寄存器，也只读出0
@@ -189,7 +189,7 @@ module regfile(
        // 当读地址与写地址相同，且写使能，且端口1读使能，则要把写入的数据直接读出来
        //   数据前推的实现，后面会提及
 	  end else if((raddr1 == waddr) && (we == `WriteEnable) 
-	  	            && (re1 == `ReadEnable)) begin
+                  && (re1 == `ReadEnable)) begin // 注意此部分！理解！
 	  	  rdata1 <= wdata;
        // 否则读取相应寄存器单元
 	  end else if(re1 == `ReadEnable) begin
@@ -201,14 +201,14 @@ module regfile(
 	end
 
     // 读端口2 的读操作
-    //   和读端口1 类似
+    // 和读端口1 类似
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			  rdata2 <= `ZeroWord;
 	  end else if(raddr2 == `RegNumLog2'h0) begin
 	  		rdata2 <= `ZeroWord;
 	  end else if((raddr2 == waddr) && (we == `WriteEnable) 
-	  	            && (re2 == `ReadEnable)) begin
+                  && (re2 == `ReadEnable)) begin // 注意此部分！理解！
 	  	  rdata2 <= wdata;
 	  end else if(re2 == `ReadEnable) begin
 	      rdata2 <= regs[raddr2];
@@ -271,7 +271,7 @@ module id(
 );
 
     // 取得指令的指令码、功能码等；
-    wire[5:0] op = inst_i[31:26]; //对于ORI指令只需要判断 26-31bit 的值即可判断
+  wire[5:0] op = inst_i[31:26]; //对于ORI指令只需要判断 26-31bit 的值即可判断
   wire[4:0] op2 = inst_i[10:6];
   wire[5:0] op3 = inst_i[5:0];
   wire[4:0] op4 = inst_i[20:16];
@@ -462,10 +462,10 @@ module ex(
 			logicout <= `ZeroWord;
 		end else begin
 			case (aluop_i)
-				`EXE_OR_OP:			begin
+				`EXE_OR_OP:	begin
 					logicout <= reg1_i | reg2_i;
 				end
-				default:				begin
+				default: begin
 					logicout <= `ZeroWord;
 				end
 			endcase
@@ -875,13 +875,13 @@ module openmips(
 endmodule
 ```
 
-# 利用VIVADO行为仿真
+# 利用Vivado行为仿真
 
 VIVADO行为仿真方法以及testbench编写本讲义不做讲解，请自行学习，但是在这儿提供一下思路：
 
 1. 在testbench中创建一个顶层MIPS实例；
 2. 给出时钟信号输入以及指令输入；
-3. 在每个周期给出不同的测试指令（不能有数据相关！因为至此我们还没有开始实现数据相关！）；
+3. 在每个周期给出不同的测试指令（**不能有数据相关！因为至此我们还没有开始实现数据相关！**）；
 4. 查看仿真波形，检查结果是否正确；
 
 ## 测试程序示例
