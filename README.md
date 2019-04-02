@@ -58,10 +58,8 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-
 
   - 修改相应模块；
 
-  - VIVADO 行为仿真；
-
   - 修改后的五级流水线结构（与原始的五级流水线结构对比）；
-11. MIPS 交叉编译环境的搭建指南。
+11. （可选）MIPS 交叉编译环境的搭建指南。
 
 ## 参考资料
 
