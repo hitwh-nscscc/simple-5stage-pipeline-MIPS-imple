@@ -134,9 +134,9 @@ module if_id(
 		if (rst == `RstEnable) begin
 			id_pc <= `ZeroWord;
 			id_inst <= `ZeroWord;
-	  end else begin
-		  id_pc <= if_pc;
-		  id_inst <= if_inst;
+	  	end else begin
+            id_pc <= if_pc;
+            id_inst <= if_inst;
 		end
 	end
 
@@ -200,10 +200,10 @@ module regfile(
 	always @ (*) begin
        // 如果重置则读出 32'h0
 	  if(rst == `RstEnable) begin
-			  rdata1 <= `ZeroWord;
+          rdata1 <= `ZeroWord;
        // 如果读0号寄存器，也只读出0
 	  end else if(raddr1 == `RegNumLog2'h0) begin
-	  		rdata1 <= `ZeroWord;
+          rdata1 <= `ZeroWord;
        // 当读地址与写地址相同，且写使能，且端口1读使能，则要把写入的数据直接读出来
        //   数据前推的实现，后面会提及
 	  end else if((raddr1 == waddr) && (we == `WriteEnable) 
@@ -222,7 +222,7 @@ module regfile(
     // 和读端口1 类似
 	always @ (*) begin
 		if(rst == `RstEnable) begin
-			  rdata2 <= `ZeroWord;
+            rdata2 <= `ZeroWord;
 	  end else if(raddr2 == `RegNumLog2'h0) begin
 	  		rdata2 <= `ZeroWord;
 	  end else if((raddr2 == waddr) && (we == `WriteEnable) 
@@ -350,31 +350,31 @@ module id(
 
     // 确定运算的操作数1
 	always @ (*) begin
-		if(rst == `RstEnable) begin
+        if(rst == `RstEnable) begin
 			reg1_o <= `ZeroWord;
-	  end else if(reg1_read_o == 1'b1) begin
-	  	reg1_o <= reg1_data_i;
-          // 若没有 读使能，则把立即数作为数据输出为 操作数1
-	  end else if(reg1_read_o == 1'b0) begin
-	  	reg1_o <= imm;
-	  end else begin
-	    reg1_o <= `ZeroWord;
-	  end
-	end
+        end else if(reg1_read_o == 1'b1) begin
+            reg1_o <= reg1_data_i;
+            // 若没有 读使能，则把立即数作为数据输出为 操作数1
+        end else if(reg1_read_o == 1'b0) begin
+            reg1_o <= imm;
+        end else begin
+            reg1_o <= `ZeroWord;
+        end
+    end
 	
     // 确定运算的操作数2
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			reg2_o <= `ZeroWord;
-	  end else if(reg2_read_o == 1'b1) begin
-	  	reg2_o <= reg2_data_i;
-          // 若没有 读使能，则把立即数作为数据输出为 操作数1
-	  end else if(reg2_read_o == 1'b0) begin
-	  	reg2_o <= imm;
-	  end else begin
-	    reg2_o <= `ZeroWord;
-	  end
-	end
+        end else if(reg2_read_o == 1'b1) begin
+            reg2_o <= reg2_data_i;
+            // 若没有 读使能，则把立即数作为数据输出为 操作数1
+        end else if(reg2_read_o == 1'b0) begin
+            reg2_o <= imm;
+        end else begin
+            reg2_o <= `ZeroWord;
+        end
+    end
 
 endmodule
 ```
@@ -499,10 +499,10 @@ module ex(
 	 wreg_o <= wreg_i;
      // 根据主运算类型选择一个选择一个运算结果最为最终结果输出
 	 case ( alusel_i ) 
-	 	`EXE_RES_LOGIC:		begin
+	 	`EXE_RES_LOGIC: begin
 	 		wdata_o <= logicout;
 	 	end
-	 	default:					begin
+	 	default: begin
 	 		wdata_o <= `ZeroWord;
 	 	end
 	 endcase
@@ -595,10 +595,10 @@ module mem(
 		if(rst == `RstEnable) begin
 			wd_o <= `NOPRegAddr;
 			wreg_o <= `WriteDisable;
-		  wdata_o <= `ZeroWord;
+		  	wdata_o <= `ZeroWord;
             // 否则因为ORI在此阶段不需要做任何事情，所以直接送给下个阶段（WB）
 		end else begin
-		  wd_o <= wd_i;
+		  	wd_o <= wd_i;
 			wreg_o <= wreg_i;
 			wdata_o <= wdata_i;
 		end    //if
@@ -639,7 +639,7 @@ module mem_wb(
 		if(rst == `RstEnable) begin
 			wb_wd <= `NOPRegAddr;
 			wb_wreg <= `WriteDisable;
-		  wb_wdata <= `ZeroWord;	
+		  	wb_wdata <= `ZeroWord;	
 		end else begin
 			wb_wd <= mem_wd;
 			wb_wreg <= mem_wreg;
